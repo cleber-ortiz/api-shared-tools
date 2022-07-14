@@ -12,7 +12,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.tijo.api.shared.tools.DefaultHttpJsonResponse;
-import br.com.tijo.api.shared.tools.exception.UnauthorizedException;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -58,6 +57,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
        String bodyOfResponse = "Não autorizado!!!";
        
        return new ResponseEntity<Object>(new DefaultHttpJsonResponse<Object>(HttpStatus.UNAUTHORIZED.value(), bodyOfResponse, null), HttpStatus.UNAUTHORIZED);
+   }
+   
+   @ExceptionHandler(value  = { NoContentException.class })
+   protected ResponseEntity<Object> handleNoContent(
+   		Exception ex, WebRequest request) {
+
+       return new ResponseEntity<Object>(new DefaultHttpJsonResponse<Object>(HttpStatus.NO_CONTENT.value(), ex.getMessage(), null), HttpStatus.NO_CONTENT);
    }
 
    @ExceptionHandler(value  = { Exception.class})
